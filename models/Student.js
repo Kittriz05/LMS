@@ -5,7 +5,7 @@ const studentSchema=new Schema({
     studentName:{type:String,required:true},
     address:{type:String,required:true},
     department:{type:String,required:true},
-    bookId:{type:String}
+    issuedBook:{type:String}
 },{timestamps:true})
 
 module.exports=mongoose.model('Student',studentSchema);

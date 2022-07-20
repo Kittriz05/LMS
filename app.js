@@ -4,8 +4,12 @@ const bodyParser= require('body-parser')
 require('./configuration/database')
 const bookRoutes = require('./routes/bookRoutes')
 const studentRoutes = require('./routes/studentRoutes')
+const cors = require("cors");
+
+//middlewares
 
 app.use(bodyParser.urlencoded({extended:true})) //body parser use garerw method ma request aaxa so yo need xa
+app.use(cors());
 app.use(express.json())
 
 //using  book routes

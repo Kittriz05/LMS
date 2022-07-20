@@ -1,4 +1,5 @@
 const Book = require('../models/Book')
+const Student = require('../models/Student')
 const bookValidation = require('../validations/bookValidation')
 
 //for viewing the book information
@@ -64,10 +65,9 @@ exports.save=async(req,res)=>{
 exports.update = async (req, res) => {
 
     //destructuring incoming request body
-    const{bookName,author,department,available}= req.body
+    const{bookName,author,department,available,issuedBy}= req.body
     //validating incoming request body
-    const { error } = bookValidation.validate(req.body)
-
+    const { error } = bookValidation.validate({bookName,author,department,available,issuedBy})
     if (error) {
         res.status(400).json({
             "message": error.message,
@@ -76,10 +76,21 @@ exports.update = async (req, res) => {
 
         try {
 
-            const data = {bookName,author,department,available}
+            const data = {bookName,author,department,available,issuedBy}
+              let update= null;   
+            if(issuedBy && issuedBy !== "" ){
+                console.log("insideIf");
+               console.log(req.params.id);
+                 update = await Book.findByIdAndUpdate({ _id: req.params.id }, {available,issuedBy})
+                const studentUpdate = await Student.findByIdAndUpdate({ _id: issuedBy},{issuedBook:req.params.id} )
+            }else{
+                console.log("helo");
+                 update = await Book.findByIdAndUpdate({ _id: req.params.id }, data)
 
-            const update = await Book.findByIdAndUpdate({ _id: req.params.id }, data)
+            }
 
+
+           
             if (update) {
                 res.status(201).json({
                     "message": "Book updated successfully!!!",
@@ -94,7 +105,7 @@ exports.update = async (req, res) => {
             }
 
         } catch (error) {
-
+                  console.log(error);
             res.status(500).json({
                 "message": "Internal Server Error",
                 "status": false
@@ -124,6 +135,7 @@ exports.delete = async (req, res) => {
             })
         }
     }catch (error) {
+        console.log(error);
         res.status(500).json({
             'message':'Internal Server Error',
             'status':false

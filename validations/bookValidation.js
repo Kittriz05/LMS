@@ -2,10 +2,11 @@ const joi = require('joi')
 
 
 const bookValidation = joi.object({
-    bookName:joi.string().required(),
-    author:joi.string().required(),
-    department:joi.string().required(),
-    available:joi.boolean().required(),
+    bookName:joi.string(),
+    author:joi.string(),
+    department:joi.string(),
+    available:joi.boolean(),
+    issuedBy:joi.string()
 })
 
 module.exports = bookValidation;

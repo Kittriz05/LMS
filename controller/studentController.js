@@ -1,4 +1,4 @@
-const Book = require('../models/Book')
+
 const Student = require('../models/Student')
 const studentValidation =require('../validations/studentValidation')
 
@@ -74,7 +74,7 @@ exports.index = async(req,res)=>{
 exports.update = async(req,res) =>{
 
     const{studentName , address,department}= req.body
-    const{error}=studentValidation.validate(req.body)
+    const{error}=studentValidation.validate({studentName , address,department})
 
     if(error){
         res.status(400).json({
